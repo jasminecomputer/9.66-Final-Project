@@ -1,0 +1,240 @@
+Using the Bayes table derived from the data to construct a reusable model for arbitrary sets of parameters of character traits. 
+In addition to being able to reason about the gender of our character, we can also use this model to hypothesize indirectly about other traits. 
+
+Below are the traits models for each story individually as well as a model that combines all of the traits across the stories (21 traits total). The combined traits model allows us to generate the posterior distributions for the priors on gender for new combinations of traits not in the story. 
+We can also condition on observed traits to find the likelihood of observing another trait. 
+
+Traits Probabilistic Model for Story 1
+
+~~~~
+var story1Model = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var appearance = function(person) 
+  {return flip( female(person) ? 0.77 : 0.23)};
+  var friendly = function(person) {return female(person) ? flip(.44) : flip(.56);}
+  var incompetent = function(person) {return female(person) ? flip(0.46): flip(0.54)}
+  var determined = function(person) {return female(person) ? flip(0.55): flip(0.45)}
+     f(female, appearance, friendly, incompetent, determined)}
+                              }
+editor.put("story1Model", story1Model)
+
+
+
+var story1Model = editor.get("story1Model", story1Model)
+var dist1 = Infer({method:'enumerate'}, story1Model(function(female, appearance, friendly,
+                                                             incompetent, determined) {
+    condition(appearance('C')&&friendly('C')&&incompetent('C')&&determined('C'))
+    return female('C')
+}))
+
+viz(dist1, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist1.score(true)))
+~~~~
+
+Traits Probabilistic Model for Story 2
+
+~~~~
+var story2Model = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var intelligent = function(person) 
+  {return flip( female(person) ? 0.54 : 0.46)};
+  var aloof = function(person) {return flip (female(person) ?.4 : .6);}
+  var unagreeable = function(person) {return flip(female(person) ? 0.4: 0.6)}
+     f(female, intelligent, aloof, unagreeable)}
+                              }
+editor.put("story2Model", story2Model)
+
+
+
+var story2Model = editor.get("story2Model", story2Model)
+var dist2 = Infer({method:'enumerate'}, story2Model(function(female, intelligent,
+                                                             aloof, unagreeable) {
+    condition(intelligent('S'))
+    return female('S')
+}))
+
+viz(dist2, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist2.score(true)))
+~~~~
+
+Traits Probabilistic Model for Story 3
+
+~~~~
+var story3Model = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var poorSelfImage = function(person) 
+  {return flip( female(person) ? 0.58 : 0.42)};
+  var family = function(person) {return flip (female(person) ?.56 : .44);}
+  var ambitious = function(person) {return flip(female(person) ? 0.44: 0.56)}
+  var vengeful = function(person) {return flip(female(person) ? 0.4: 0.6)}
+     f(female, poorSelfImage, family, ambitious, vengeful)}
+                              }
+editor.put("story3Model", story3Model)
+
+
+
+var story3Model = editor.get("story3Model", story3Model)
+var dist3 = Infer({method:'enumerate'}, story3Model(function(female, poorSelfImage,
+                                                             family, ambitious, vengeful) {
+    condition(poorSelfImage('A')&&family('A')&&ambitious('A')&&vengeful('A'))
+    return female('A')
+}))
+
+viz(dist3, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist3.score(true)))
+~~~~
+
+Traits Probabilistic Model for Story 4
+
+~~~~
+var story4Model = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var lowPay = function(person) 
+  {return flip( female(person) ? 0.48 : 0.52)};
+  var romance = function(person) {return flip (female(person) ?.57 : .43);}
+  var attractive = function(person) {return flip(female(person) ? 0.48: 0.52)}
+     f(female, lowPay, romance, attractive)}
+                              }
+editor.put("story4Model", story4Model)
+
+
+
+var story4Model = editor.get("story4Model", story4Model)
+var dist4 = Infer({method:'enumerate'}, story4Model(function(female, lowPay, romance,
+                                                             attractive) {
+    condition(lowPay('T'))
+    return female('T')
+}))
+
+viz(dist4, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist4.score(true)))
+~~~~
+
+Traits Probabilistic Model for Story 5
+
+~~~~
+var story5Model = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var brave = function(person) 
+  {return flip( female(person) ? 0.4 : 0.6)};
+  var strong = function(person) {return flip (female(person) ? .53 : .47);}
+  var selfDoubt = function(person) {return flip(female(person) ? 0.5: 0.5)}
+  var fearless = function(person) {return flip(female(person) ? 0.49: 0.51)}
+     f(female, brave, strong, selfDoubt, fearless)}
+                              }
+editor.put("story5Model", story5Model)
+
+
+
+var story5Model = editor.get("story5Model", story5Model)
+var dist5 = Infer({method:'enumerate'}, story5Model(function(female, brave, strong,
+                                                             selfDoubt, fearless) {
+    condition(brave('L'))
+    return female('L')
+}))
+
+viz(dist5, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist5.score(true)))
+~~~~
+
+Traits Probabilistic Model for Story 6
+
+~~~~
+var story6Model = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var powerful = function(person) 
+  {return flip( female(person) ? 0.39 : 0.63)};
+  var unreasonable = function(person) {return flip (female(person) ?.53 : .47);}
+  var apologetic = function(person) {return flip(female(person) ? 0.53: 0.47)}
+     f(female, powerful, unreasonable, apologetic)}
+                              }
+editor.put("story6Model", story6Model)
+
+
+
+var story6Model = editor.get("story6Model", story6Model)
+var dist6 = Infer({method:'enumerate'}, story6Model(function(female, powerful, 
+                                                             unreasonable, apologetic) {
+    condition(powerful('A')&&unreasonable('A')&&apologetic('A'))
+    return female('A')
+}))
+
+viz(dist6, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist6.score(true)))
+~~~~
+
+Combined Traits Probabilistic Model
+
+~~~~
+var traitsModel = function(f) {return function() {
+  var female = mem(function(person) {return flip(.5)});
+  var appearance = function(person) 
+  {return flip( female(person) ? 0.77 : 0.23)};
+  var friendly = function(person) {return female(person) ? flip(.44) : flip(.56);}
+  var incompetent = function(person) {return female(person) ? flip(0.46): flip(0.54)}
+  var determined = function(person) {return female(person) ? flip(0.55): flip(0.45)}
+  var intelligent = function(person) 
+  {return flip( female(person) ? 0.54 : 0.46)};
+  var aloof = function(person) {return flip (female(person) ?.4 : .6);}
+  var unagreeable = function(person) {return flip(female(person) ? 0.4: 0.6)}
+  var poorSelfImage = function(person) 
+  {return flip( female(person) ? 0.58 : 0.42)};
+  var family = function(person) {return flip (female(person) ?.56 : .44);}
+  var ambitious = function(person) {return flip(female(person) ? 0.44: 0.56)}
+  var vengeful = function(person) {return flip(female(person) ? 0.4: 0.6)}
+  var lowPay = function(person) 
+  {return flip( female(person) ? 0.48 : 0.52)};
+  var romance = function(person) {return flip (female(person) ?.57 : .43);}
+  var attractive = function(person) {return flip(female(person) ? 0.48: 0.52)}
+  var brave = function(person) 
+  {return flip( female(person) ? 0.4 : 0.6)};
+  var strong = function(person) {return flip (female(person) ? .53 : .47);}
+  var selfDoubt = function(person) {return flip(female(person) ? 0.5: 0.5)}
+  var fearless = function(person) {return flip(female(person) ? 0.49: 0.51)}
+  var powerful = function(person) 
+  {return flip( female(person) ? 0.39 : 0.63)};
+  var unreasonable = function(person) {return flip (female(person) ?.53 : .47);}
+  var apologetic = function(person) {return flip(female(person) ? 0.53: 0.47)}
+     f(female, appearance, friendly, incompetent, determined, intelligent, aloof,
+      unagreeable, poorSelfImage, family, ambitious, vengeful, lowPay, romance,
+      attractive, brave, strong, selfDoubt, fearless, powerful, unreasonable, apologetic
+      )}
+                              }
+editor.put("traitsModel", traitsModel)
+
+
+
+var traitsModel = editor.get("traitsModel", traitsModel)
+var dist = Infer({method:'enumerate'}, traitsModel(function(female, appearance, friendly, incompetent, determined, intelligent, aloof,
+      unagreeable, poorSelfImage, family, ambitious, vengeful, lowPay, romance,
+      attractive, brave, strong, selfDoubt, fearless, powerful, unreasonable, apologetic
+      ) {
+    condition(appearance('B')&&friendly('B')&&attractive('B')&&powerful('B'))
+    return female('B')
+  //return unagreeable('B')
+}))
+
+viz(dist, {xLabel: 'female', yLabel: 'P(female| trait set)'})
+print("P(female|traits) = " + Math.exp(dist.score(true)))
+~~~~
+
+Another idea I had was to separate the models by like I had in the spreadsheet. Then, I would test it on sample points and determine which distribution, male or female, it had the best fit for. I did not end up using this idea due to the limited meaningful difference between the two distributions. I did not have the time to pursue this 
+idea further, but think it would be interesting to flesh it out further because gender would be one of the obvious influences on beliefs.
+
+~~~~
+var makeModel = function(f) {return function() {
+    // Your code here
+   var guesserFemale = mem(function(guesser){return flip(0.57)})
+   var charFemale = mem(function(person){return flip(0.5)})
+   var appearance = flip(guesserFemale? (charFemale ? 0.8: 0.2 ): charFemale? 0.6: 0.4)
+
+   var female = function(person, guesser) {
+     return flip(guesserFemale(guesser) ? 
+                (appearance ? gaussian({mu:50, sigma:10}) : gaussian({mu:70, sigma: 10})) :
+                (appearance ? gaussian({mu:50, sigma:10}) : gaussian({mu:20, sigma:10}))
+                 );}
+  
+     f(guesserFemale, appearance, guesserFemale, female)
+
+}};
+editor.put("makeModel", makeModel)
