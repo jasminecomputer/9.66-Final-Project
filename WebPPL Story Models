@@ -1,5 +1,5 @@
 Using the Bayes table derived from the data to construct a reusable model for arbitrary sets of parameters of character traits. 
-In addition to being able to reason about the gender of our character, we can also use this model to hypothesize indirectly about other traits. 
+In addition to being https://github.com/jasminecomputer/9.66-Final-Project/issuesable to reason about the gender of our character, we can also use this model to hypothesize indirectly about other traits. 
 
 Below are the traits models for each story individually as well as a model that combines all of the traits across the stories (21 traits total). The combined traits model allows us to generate the posterior distributions for the priors on gender for new combinations of traits not in the story. 
 We can also condition on observed traits to find the likelihood of observing another trait. 
